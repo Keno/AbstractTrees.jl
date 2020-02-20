@@ -78,8 +78,9 @@ children(x::Expr) = x.args
 
 # For AbstractDicts
 
-printnode(io::IO, kv::Pair{K,V}) where {K,V} = printnode(io,kv[1])
-children(kv::Pair{K,V}) where {K,V} = (kv[2],)
+children(d::Dict) = [p for p in d]
+children(kv::Pair) = children(kv[2])
+printnode(io::IO, kv::Pair) = isempty(children(kv[2])) ? print(io,"$(kv[1]): $(kv[2])") : print(io,"$(kv[1]): $(typeof(kv[2]))")
 
 # For potentially-large containers, just show the type
 
